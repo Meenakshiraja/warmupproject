@@ -1,0 +1,145 @@
+<html>
+    <body>
+        <br>
+        <h5 style="text-align: center;">Personal Information</h5>
+        <form [formGroup]="studentform">
+            <br>
+            <div class="form-group">
+            <div class="row">
+                <div class="col-lg-2 offset-2">
+                    <label>Name</label>
+                </div>
+                <div class="col-lg-2">
+                    <input type="text" class="form-control" formControlName="name" />
+                    <span *ngIf="form.name && form.name.invalid && form.name.touched" class="error">
+                      <span *ngIf="form.name?.errors?.['required']">Please enter Student name</span>
+                      <span *ngIf="form.name?.errors?.['pattern']">Name must be in string</span>
+                    </span> 
+                </div>
+                </div>
+            </div>
+            <br>
+            <div class="form-group">
+            <div class="row">
+                <div class="col-lg-2 offset-2">
+                    <label>Date of Birth</label>
+                </div>
+                <div class="col-lg-2">
+                    <input #bd type="date" class="form-control" formControlName="dob" (blur)="valid(bd.value)"/>
+                    <span *ngIf="form.dob && form.dob.invalid && form.dob.touched" class="error">
+                      Please enter Date of Birth                     
+                    </span> 
+                </div>
+                </div>
+            </div>
+            <br>
+            <div class="form-group">
+            <div class="row">
+                <div class="col-lg-2 offset-2">
+                    <label>E-Mail</label>
+                </div>
+                <div class="col-lg-2">
+                    <input type="text" class="form-control" formControlName="email">
+                    <span *ngIf="form.email && form.email.invalid && form.email.touched" class="error">Please enter a valid email Id</span>
+                </div>
+            </div>
+            </div>
+            <br>
+            <div class="row">
+                <div class="col-lg-2 offset-2">
+                <label>Mobile:</label>
+                </div>
+                <div class="col-lg-2">
+                    <select class="form-select-inline">
+                        <option>+91</option>
+                        <option>+86</option>
+                        <option>+1</option>
+                        <option>+44</option>
+                        <option>+61</option>
+                    </select><input type="phone" formControlName="mobile" class="form-control-inline"/>
+                    <div *ngIf="form.mobile && form.mobile.invalid && form.mobile.touched" class="error">
+                  <div *ngIf="form.mobile?.errors?.['required']">Phone is required</div>
+                  <div *ngIf="form.mobile?.errors?.['pattern']">Mobile no. must have 10 digits.</div>
+                </div>
+                </div>
+            </div>
+            <br>
+            <div class="row">
+                <div class="col-lg-2 offset-2">
+                    <label>Gender</label>
+                </div>
+                <div class="col-lg-3">
+                    <div class="form-check-inline" *ngFor="let gen of genders">
+                        
+                        <input type="radio" [value]="gen" class="form-check-input" formControlName="gender">&nbsp;{{gen}}
+                    </div>
+                    <span *ngIf="form.gender && form.gender.invalid && form.gender.touched" class="error">Please choose your gender</span>
+                </div>
+            </div>
+            <br>
+            <div class="row">
+                <div class="col-lg-2 offset-2">
+                    <label>Current Address</label>
+                </div>
+                <div class="col-lg-2">
+                    <textarea rows="4" class="form-control" formControlName="currentaddress"></textarea>
+                    <span *ngIf="form.currentaddress && form.currentaddress.invalid && form.currentaddress.touched" class="error">Please enter your address</span>
+                </div>
+            </div>
+            <br>
+            <br>
+            <div class="row">
+                <div class="col-lg-2 offset-2">
+                    <label>Permanent Address</label>
+                </div>
+                <div class="col-lg-2">
+                    <textarea rows="4" class="form-control" formControlName="permanentaddress"></textarea>
+                    <span *ngIf="form.permanentaddress && form.permanentaddress.invalid && form.permanentaddress.touched" class="error">Please enter your address</span>
+                    <br>
+                    <input type="checkbox" class="form-check-input" formControlName="sameaddress" (change)="checkboxinput($event.target)">
+                    <label class="form-check-label">&nbsp;Same as Current address</label>
+                </div>
+            </div>
+            <br>
+            <div class="row">
+                <div class="col-lg-2 offset-2">
+                    <label>State</label>
+                </div>
+                <div class="col-lg-2">
+                    <div class="dropdown-container">
+                        <ng-multiselect-dropdown formControlName="state"
+                            [placeholder]="'State'"
+                            [settings]="dropdownsetting"
+                            [data]="states">
+                        </ng-multiselect-dropdown>
+                    <!-- <span *ngIf="form.state && form.state.invalid && form.state.touched" class="error">Please choose a state</span> -->
+                    </div>
+                </div>
+            </div>
+            <br>
+            <div class="row">
+                <div class="col-lg-2 offset-2">
+                    <label>District</label>
+                </div>
+                <div class="col-lg-2">
+                    <div class="dropdown-container">
+                        <ng-multiselect-dropdown formControlName="district"
+                            [placeholder]="'District'"
+                            [settings]="dropdownsetting"
+                            [data]="districts">
+                        </ng-multiselect-dropdown>
+                    <!-- <span *ngIf="form.district && form.district.invalid && form.district.touched" class="error">Please choose a district</span> -->
+                    </div>
+                </div>
+            </div>
+            <br>
+            <div class="row">
+                <div class="col-lg-2 offset-4">
+                    <button type="button" class="btn btn-primary">Save</button>
+                </div>
+            </div>
+        </form>
+    </body>
+</html>
+
+
