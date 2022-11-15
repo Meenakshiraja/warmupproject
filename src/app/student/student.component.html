@@ -13,7 +13,7 @@
                     <input type="text" class="form-control" formControlName="name" />
                     <span *ngIf="form.name && form.name.invalid && form.name.touched" class="error">
                       <span *ngIf="form.name?.errors?.['required']">Please enter Student name</span>
-                      <span *ngIf="form.name?.errors?.['pattern']">Name must be in string</span>
+                      <span *ngIf="form.name?.errors?.['pattern']">Name can contain only alphabet and space</span>
                     </span> 
                 </div>
                 </div>
@@ -25,7 +25,7 @@
                     <label>Date of Birth</label>
                 </div>
                 <div class="col-lg-2">
-                    <input #bd type="date" class="form-control" formControlName="dob" (blur)="valid(bd.value)"/>
+                    <input #bd type="date" class="form-control" formControlName="dob" (blur)="valid(bd.value)" max="2000-12-31"/>
                     <span *ngIf="form.dob && form.dob.invalid && form.dob.touched" class="error">
                       Please enter Date of Birth                     
                     </span> 
@@ -49,14 +49,8 @@
                 <div class="col-lg-2 offset-2">
                 <label>Mobile:</label>
                 </div>
-                <div class="col-lg-2">
-                    <select class="form-select-inline">
-                        <option>+91</option>
-                        <option>+86</option>
-                        <option>+1</option>
-                        <option>+44</option>
-                        <option>+61</option>
-                    </select><input type="phone" formControlName="mobile" class="form-control-inline"/>
+                <div class="col-lg-3">
+                    <app-mobile (mobileno)="aftermobileadd($event)"></app-mobile>
                     <div *ngIf="form.mobile && form.mobile.invalid && form.mobile.touched" class="error">
                   <div *ngIf="form.mobile?.errors?.['required']">Phone is required</div>
                   <div *ngIf="form.mobile?.errors?.['pattern']">Mobile no. must have 10 digits.</div>
@@ -115,6 +109,11 @@
                     <!-- <span *ngIf="form.state && form.state.invalid && form.state.touched" class="error">Please choose a state</span> -->
                     </div>
                 </div>
+                <div class="col-lg-2">
+                    <select formControlName="state1" (change)="onstatechange()">
+                        <option *ngFor="let state of statecity">{{state.state}}</option>
+                    </select>
+                </div>
             </div>
             <br>
             <div class="row">
@@ -131,7 +130,48 @@
                     <!-- <span *ngIf="form.district && form.district.invalid && form.district.touched" class="error">Please choose a district</span> -->
                     </div>
                 </div>
+                <div class="col-lg-2">
+                    <select formControlName="district1">
+                        <option *ngFor="let c of city">
+                            {{c}}</option>
+                    </select>
+                </div>
             </div>
+            
+            <br>
+            <h5 style="text-align: center;">Academic Information</h5>
+            <br>
+            <br>
+            <div class="row">
+                 <div class="col-lg-2 offset-2">
+                    <label>Enrollment Number</label>
+                </div>
+                <div class="col-lg-2">
+                    <input type="text" class="form-control" formControlName="roll" />
+                    <span *ngIf="form.roll && form.roll.invalid && form.roll.touched" class="error">
+                        <span *ngIf="form.roll?.errors?.['required']">Please enter Student Roll No.</span>
+                        <span *ngIf="form.roll?.errors?.['pattern']">Must be in Alphanumerals</span>
+                    </span> 
+                </div>
+                
+                <div class="col-lg-2 offset-1">
+                      <label>School Name</label>
+                </div>
+                <div class="col-lg-2">
+                      <input type="text" class="form-control" formControlName="schoolname" />
+                      <span *ngIf="form.schoolname && form.schoolname.invalid && form.schoolname.touched" class="error">
+                        <span *ngIf="form.schoolname?.errors?.['required']">Please enter Student name</span>
+                        <span *ngIf="form.schoolname?.errors?.['pattern']">Must be in Alphanumerals</span>
+                    </span> 
+                </div>  
+            </div>
+            <br>
+            <div class="row">
+                <div class="col-lg-2 offset-2">
+                <h5>Mark Information</h5>
+                </div>
+            </div>
+            <br>
             <br>
             <div class="row">
                 <div class="col-lg-2 offset-4">

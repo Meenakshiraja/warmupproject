@@ -5,11 +5,13 @@ import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { StudentComponent } from './student/student.component';
+import { MobileComponent } from './mobile/mobile.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    StudentComponent
+    StudentComponent,
+    MobileComponent
   ],
   imports: [
     BrowserModule,

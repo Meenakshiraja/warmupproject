@@ -18,6 +18,12 @@ export class StudentComponent implements OnInit {
   csc = require('country-state-city').State;
   cscity = require('country-state-city').City;
   genders=['Male','Female','Other'];
+  statecity=[
+    {state:"TamilNadu",city:["Chennai","Sivakasi","Virudhunagar","Madurai","Salem"]},
+    {state:"Andhra Pradesh",city:["Vijayawada","Visakhapatnam","Tirupati","Nellore"]},
+    {state:"Kerala",city:["Thiruvananthapuram","Kozhikode","Kochi"]}
+  ];
+  city:string[]=this.statecity[0].city;
 
   constructor(private fb:FormBuilder) { }
 
@@ -38,9 +44,17 @@ export class StudentComponent implements OnInit {
     permanentaddress:['',Validators.required],
     sameaddress:[false],
     state:['',Validators.required],
-    district:['',Validators.required]
+    district:['',Validators.required],
+    state1:['',Validators.required],
+    district1:['',Validators.required],
+    roll:['',Validators.compose([Validators.required,Validators.pattern('[a-zA-Z0-9 .]*')])],
+    schoolname:['',Validators.compose([Validators.required,Validators.pattern('[a-zA-Z0-9 .]*')])],
   });
 
+  aftermobileadd(e:any)
+  {
+    console.log(e);
+  }
   initDropdownSettings(){
     this.dropdownsetting={
       singleSelection:true,
@@ -50,6 +64,20 @@ export class StudentComponent implements OnInit {
       allowSearchFilter:true,
       maxHeight:'100',
     };
+  }
+
+  onstatechange()
+  {
+    let s=this.studentform.get('state1')?.value;
+    for(let i=0;i<this.statecity.length;i++)
+    {
+      if(s==this.statecity[i].state)
+      {
+        this.city=this.statecity[i].city;
+      }
+    }
+    console.log(this.city);
+
   }
   getStates()
   {
