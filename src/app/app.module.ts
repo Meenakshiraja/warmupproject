@@ -6,6 +6,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { StudentComponent } from './student/student.component';
 import { MobileComponent } from './mobile/mobile.component';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -17,7 +18,8 @@ import { MobileComponent } from './mobile/mobile.component';
     BrowserModule,
     AppRoutingModule,
     ReactiveFormsModule,
-    NgMultiSelectDropDownModule
+    NgMultiSelectDropDownModule,
+    HttpClientModule
   ],
   providers: [],
   bootstrap: [AppComponent]

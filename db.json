@@ -1,0 +1,33 @@
+{
+  "posts": [
+    {
+      "id": 1,
+      "title": "json-server",
+      "author": "typicode"
+    },
+    {
+      "name": "Meenakshi",
+      "email": "r@gmail.com",
+      "mobile": 9600673674,
+      "gender": "Female",
+      "currentaddress": "vvv",
+      "permanentaddress": "vvv",
+      "sameaddress": true,
+      "state": "[object Object]",
+      "district": "[object Object]",
+      "roll": "30PP32",
+      "schoolname": "hgfhg",
+      "id": 2
+    }
+  ],
+  "comments": [
+    {
+      "id": 1,
+      "body": "some comment",
+      "postId": 1
+    }
+  ],
+  "profile": {
+    "name": "typicode"
+  }
+}

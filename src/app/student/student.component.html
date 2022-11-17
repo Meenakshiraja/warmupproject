@@ -1,5 +1,20 @@
-<html>
-    <body>
+<nav class="navbar navbar-light bg-primary">
+    <div class="container-fluid">
+        <div class="d-flex">
+            <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#exampleModal">Add Student</button>
+        </div>
+    </div>
+</nav>
+
+
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Add/Edit Student Details</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
         <br>
         <h5 style="text-align: center;">Personal Information</h5>
         <form [formGroup]="studentform">
@@ -50,7 +65,7 @@
                 <label>Mobile:</label>
                 </div>
                 <div class="col-lg-3">
-                    <app-mobile (mobileno)="aftermobileadd($event)"></app-mobile>
+                    <app-mobile></app-mobile>
                     <div *ngIf="form.mobile && form.mobile.invalid && form.mobile.touched" class="error">
                   <div *ngIf="form.mobile?.errors?.['required']">Phone is required</div>
                   <div *ngIf="form.mobile?.errors?.['pattern']">Mobile no. must have 10 digits.</div>
@@ -75,7 +90,7 @@
                 <div class="col-lg-2 offset-2">
                     <label>Current Address</label>
                 </div>
-                <div class="col-lg-2">
+                <div class="col-lg-3">
                     <textarea rows="4" class="form-control" formControlName="currentaddress"></textarea>
                     <span *ngIf="form.currentaddress && form.currentaddress.invalid && form.currentaddress.touched" class="error">Please enter your address</span>
                 </div>
@@ -86,7 +101,7 @@
                 <div class="col-lg-2 offset-2">
                     <label>Permanent Address</label>
                 </div>
-                <div class="col-lg-2">
+                <div class="col-lg-3">
                     <textarea rows="4" class="form-control" formControlName="permanentaddress"></textarea>
                     <span *ngIf="form.permanentaddress && form.permanentaddress.invalid && form.permanentaddress.touched" class="error">Please enter your address</span>
                     <br>
@@ -109,11 +124,12 @@
                     <!-- <span *ngIf="form.state && form.state.invalid && form.state.touched" class="error">Please choose a state</span> -->
                     </div>
                 </div>
-                <div class="col-lg-2">
+                <!-- <div class="col-lg-2">
                     <select formControlName="state1" (change)="onstatechange()">
+                        <option>Select State</option>
                         <option *ngFor="let state of statecity">{{state.state}}</option>
                     </select>
-                </div>
+                </div> -->
             </div>
             <br>
             <div class="row">
@@ -130,12 +146,12 @@
                     <!-- <span *ngIf="form.district && form.district.invalid && form.district.touched" class="error">Please choose a district</span> -->
                     </div>
                 </div>
-                <div class="col-lg-2">
+                <!-- <div class="col-lg-2">
                     <select formControlName="district1">
-                        <option *ngFor="let c of city">
-                            {{c}}</option>
+                        <option>Select District</option>
+                        <option *ngFor="let c of city">{{c}}</option>
                     </select>
-                </div>
+                </div> -->
             </div>
             
             <br>
@@ -172,14 +188,115 @@
                 </div>
             </div>
             <br>
+            <div class="table-responsive offset-1" formArrayName="studentmark">
+                <table class="table table-bordered">
+                    <tr>
+                        <th style="width: 5%;">S.No</th>
+                        <th style="width: 20%;">Subject Name</th>
+                        <th style="width: 20%;">Mark</th>
+                        <th style="width: 10%;">Action</th>
+                    </tr>
+                    <ng-container *ngFor="let mark of studentmarks.controls; let i=index;"
+                        [formGroupName]="i">
+                        <tr>
+                            <td>
+                                {{i+1}}
+                            </td>
+                            <td>
+                                <div><input type="text" class="form-control" formControlName="subject" placeholder="Enter Subject"></div>
+                                <span *ngIf="studentmarks.controls[i].get('subject') && studentmarks.controls[i].get('subject')?.invalid && studentmarks.controls[i].get('subject')?.touched" class="error">
+                                    <span *ngIf="studentmarks.controls[i].get('subject')?.errors?.['required']">Subject Name required.</span>
+                                    <span *ngIf="studentmarks.controls[i].get('subject')?.errors?.['pattern']">Subject Name should be in Alphanumerals.
+                                    </span>
+                                </span>
+                            </td>
+                            <td>
+                                <div><input type="text" class="form-control" formControlName="mark" placeholder="Enter Mark"></div>
+                                <span *ngIf="studentmarks.controls[i].get('mark') && studentmarks.controls[i].get('mark')?.invalid && studentmarks.controls[i].get('mark')?.touched" class="error">
+                                    <span *ngIf="studentmarks.controls[i].get('mark')?.errors?.['required']">Mark required.</span>
+                                    <span *ngIf="studentmarks.controls[i].get('mark')?.errors?.['max']">Max mark is 100
+                                    </span>
+                                </span>
+                            </td>
+                            <td>
+                                <div><button class="btn btn-sm btn-danger"
+                                    (click)="deletemark(i)">Delete</button></div>
+                            </td>
+                        </tr>                        
+                    </ng-container>
+                    <tr>
+                        <td colspan="5" class="text-center">
+                            <div><button class="btn btn-success" (click)="addmark()">Add mark
+                            </button>
+                        <span *ngIf="studentmarks.invalid || studentmarks.pristine" class="error">
+                            <span *ngIf="studentmarks.errors?.['required']">Mark required.</span>
+                            <span *ngIf="studentmarks.errors?.['minLength']">Minimum 5 Marks needed</span>
+                        </span></div></td>
+                    </tr>
+                </table>
+            </div>
             <br>
             <div class="row">
-                <div class="col-lg-2 offset-4">
-                    <button type="button" class="btn btn-primary">Save</button>
+                <div class="col-lg-2 offset-2">
+                    <label>Captcha</label>
+                </div>
+                <div class="col-lg-2">
+                    <img src="/assets/captcha.jpg" width="200px">
                 </div>
             </div>
+            <br>
+            <div class="row">
+                <div class="col-lg-2 offset-2">
+                    <label>Verify</label>
+                </div>
+                <div class="col-lg-2">
+                <input type="text" class="form-control" formControlName="captcha" id="captcha" placeholder="Enter captcha text">
+                <span *ngIf="form.captcha && form.captcha.invalid && form.captcha.touched" class="error">
+                    <span *ngIf="form.captcha?.errors?.['required']">Please enter captcha text</span>
+                    <span *ngIf="form.captcha?.errors?.['pattern']">Captcha Text is Wrong... Try again</span>
+                </span> </div>
+            </div>
+            <br>
+            <div class="row">
+                <div class="col-lg-2 offset-2">
+                <div class="form-check">
+                    <input type="checkbox" class="form-check-input" formControlName="agree"/>
+                        <label class="form-check-label">I Agree</label><br>
+                        <span *ngIf="form.agree && form.agree.invalid && form.agree.touched" class="error">Please check I agree</span>
+                </div>
+                </div>
+            </div>
+            <!-- <br>
+            <div class="row">
+                <div class="col-lg-2 offset-5">
+                    <button type="button" [disabled]="studentform.invalid" (click)="submitformdata()" class="btn btn-lg btn-primary">Save</button>
+                </div>
+            </div> -->
         </form>
-    </body>
-</html>
+    </div> 
+        
+      
+    <div class="modal-footer">
+      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      <button type="button" [disabled]="studentform.invalid" (click)="poststudentdetails()" data-bs-target="#exampleModalToggle2" data-bs-toggle="modal" data-bs-dismiss="modal" class="btn btn-primary">Save</button>
+    </div>
+  </div>
+</div>
+</div>
 
-
+<div class="modal fade" id="exampleModalToggle2" aria-hidden="true" aria-labelledby="exampleModalToggleLabel2" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="btn btn-primary">Print</button>
+            <button type="button" class="btn btn-success">Save as PDF</button>
+        </div>
+        <div class="modal-body">
+          Hide this modal and show the first with the button below.
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+</div>

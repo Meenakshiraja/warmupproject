@@ -10,7 +10,7 @@ export class MobileComponent implements OnInit {
 
   @Output() mobileno:EventEmitter<string>=new EventEmitter<string>();
 
-  form:any;
+  form!:FormGroup;
 
   constructor(private rootform:FormGroupDirective) { }
 
