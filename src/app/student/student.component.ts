@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder,Validators,FormArray,FormGroup } from '@angular/forms';
-import { IState, ICity } from 'country-state-city';
+// import { IState, ICity } from 'country-state-city';
 import { IStudent } from './studentinterface';
 import { ApiService } from '../api.service';
+import { jsPDF } from "jspdf";
+import html2canvas  from 'html2canvas';
 
 @Component({
   selector: 'app-student',
@@ -12,27 +14,29 @@ import { ApiService } from '../api.service';
 export class StudentComponent implements OnInit {
 
   studentmodel={} as IStudent;
-
+  
+  percentage:number=0;
+  studentinfo:any;
   dropdownsetting:any;
-  states:IState[]=[];
-  districts:ICity[]=[];
-  stateiso:any=[];
-  csc = require('country-state-city').State;
-  cscity = require('country-state-city').City;
+  // states:IState[]=[];
+  // districts:ICity[]=[];
+  // stateiso:any=[];
+  // csc = require('country-state-city').State;
+  // cscity = require('country-state-city').City;
   genders=['Male','Female','Other'];
-  // statecity=[
-  //   {state:"TamilNadu",city:["Chennai","Sivakasi","Virudhunagar","Madurai","Salem"]},
-  //   {state:"Andhra Pradesh",city:["Vijayawada","Visakhapatnam","Tirupati","Nellore"]},
-  //   {state:"Kerala",city:["Thiruvananthapuram","Kozhikode","Kochi"]}
-  // ];
-  // city:string[]=[];
+  statecity=[
+    {state:"TamilNadu",city:["Chennai","Sivakasi","Virudhunagar","Madurai","Salem"]},
+    {state:"Andhra Pradesh",city:["Vijayawada","Visakhapatnam","Tirupati","Nellore"]},
+    {state:"Kerala",city:["Thiruvananthapuram","Kozhikode","Kochi"]}
+  ];
+  city:string[]=[];
 
   constructor(private fb:FormBuilder,private apiservice:ApiService) { }
 
   ngOnInit(): void {
-    this.initDropdownSettings();
-    this.getStates();
-    this.handleValueChanges();
+    // this.initDropdownSettings();
+    // this.getStates();
+    // this.handleValueChanges();
   }
 
   studentform = this.fb.group
@@ -45,46 +49,90 @@ export class StudentComponent implements OnInit {
     currentaddress:['',Validators.required],
     permanentaddress:['',Validators.required],
     sameaddress:[false],
-    state:['',Validators.required],
-    district:['',Validators.required],
-    // state1:['',Validators.required],
-    // district1:['',Validators.required],
+    // state:['',Validators.required],
+    // district:['',Validators.required],
+    state1:['',Validators.required],
+    district1:['',Validators.required],
     roll:['',Validators.compose([Validators.required,Validators.pattern('[a-zA-Z0-9 .]*')])],
     schoolname:['',Validators.compose([Validators.required,Validators.pattern('[a-zA-Z0-9 .]*')])],
     studentmark:this.fb.array([],Validators.compose([Validators.required,Validators.minLength(5)])),
+    total:[0],
+    percentage:[0],
+    grade:[''],
     agree:[false,Validators.requiredTrue],
     captcha:['',[Validators.required,Validators.pattern('[263S2V]{6}')]],
   });
 
   poststudentdetails()
   {
-    this.studentmodel.name=String(this.studentform.value.name);
-    this.studentmodel.dob=this.studentform.value.dob;
-    this.studentmodel.email=String(this.studentform.value.email);
-    this.studentmodel.mobile=Number(this.studentform.value.mobile);
-    this.studentmodel.gender=String(this.studentform.value.gender);
-    this.studentmodel.currentaddress=String(this.studentform.value.currentaddress);
-    this.studentmodel.permanentaddress=String(this.studentform.value.permanentaddress);
-    this.studentmodel.sameaddress=Boolean(this.studentform.value.sameaddress);
-    this.studentmodel.state=String(this.studentform.value.state);
-    this.studentmodel.district=String(this.studentform.value.district);
-    this.studentmodel.roll=String(this.studentform.value.roll);
-    this.studentmodel.schoolname=String(this.studentform.value.schoolname);
-
-    // this.studentmodel.studentmark[]=this.studentform.value.studentmark;
-
-    this.apiservice.poststudent(this.studentmodel).subscribe(res=>{
+    this.apiservice.poststudent(this.studentform.value).subscribe(res=>{
       console.log(res);
       alert("Student added Successfully")
+    },(error:any)=>{
+        console.log(error); 
     });
+
+    this.getallstudent();
   }
 
+  async getallstudent()
+  {
+    this.studentinfo=await this.apiservice.getstudent();
+    console.log(this.studentinfo);
+    // },(error)=>{
+    //   console.log(error);
+    // });
+  }
+
+  generatepdf()
+  {
+    var element=document.getElementById('print-section');
+
+    html2canvas(element!).then((canvas)=>{
+      console.log(canvas);
+    
+      var imgdata=canvas.toDataURL('image/png')
+      var doc = new jsPDF('p','mm','a4');
+      var width=doc.internal.pageSize.getWidth();
+      var height=canvas.height * width / canvas.width;
+      doc.addImage(imgdata,'PNG',0,0,width,height);
+      doc.save('info.pdf');
+    });
+  }
   addmark()
   {
     ((this.studentform as FormGroup).get('studentmark') as FormArray).push(this.fb.group({
       subject:['',Validators.compose([Validators.required,Validators.pattern('[a-zA-Z0-9 .]*')])],
       mark:['',Validators.compose([Validators.required,Validators.max(100)])]
-  }));
+    }));
+  }
+  calc()
+  {
+    let total=0;
+    let grade='-';
+    for(let j=0;j<this.studentmarks.length;j++)
+    {
+      total+=Number(this.studentmarks.value[j].mark);
+    }
+    console.log(total);
+    this.studentform.controls['total'].setValue(total);
+
+    this.percentage=total/((this.studentmarks.length)*100)*100;
+    // percentage | number:'1.0-0';
+    //this.studentform.controls['percentage'].setValue(percentage);
+    //this.studentform.patchValue({percentage:String(percentage)});
+    if((this.percentage<=100)&&(this.percentage>90))
+      grade='A';
+    if((this.percentage<=90)&&(this.percentage>80))
+      grade='B';
+    if((this.percentage<=80)&&(this.percentage>60))
+      grade='C';
+    if((this.percentage<=60)&&(this.percentage>=40))
+      grade='D';
+    if(this.percentage<40)
+      grade='E';
+    this.studentform.controls['grade'].setValue(grade);
+    //this.studentform.patchValue({grade:grade});
   }
 
   deletemark(i:number)
@@ -105,44 +153,40 @@ export class StudentComponent implements OnInit {
     };
   }
 
-  // onstatechange()
+  onstatechange()
+  {
+    let s=this.studentform.get('state1')?.value;
+    var city1=this.statecity.filter(a=>a.state==s);
+    this.city=city1[0].city;
+  }
+
+  // getStates()
   // {
-  //   let s=this.studentform.get('state1')?.value;
-  //   for(let i=0;i<this.statecity.length;i++)
-  //   {
-  //     if(s==this.statecity[i].state)
-  //     {
-  //       this.city=this.statecity[i].city;
-  //     }
-  //   }
+  //   this.states=this.csc.getAllStates();
   // }
-  submitformdata()
-  {
-    console.log(this.studentform.value);
-    console.log(this.studentform.valid);
-    console.log(this.studentform);
-  }
-  getStates()
-  {
-    this.states=this.csc.getAllStates();
-  }
   
-  getDistrict(statecode:string)
-  {
-    this.districts=this.cscity.getCitiesOfState("IN",statecode);
+  // getDistrict(statecode:string)
+  // {
+  //   this.districts=this.cscity.getCitiesOfState("IN",statecode);
+  // }
+  // handleValueChanges()
+  // {
+  //   this.studentform.get('state')?.valueChanges.subscribe((response)=>{
+  //     this.stateiso=response;
+  //     this.getDistrict(this.stateiso[0].isoCode);  
+  //   });
+  // }
+
+  after_mobileno_set(e:any){
+    //this.studentform.controls["mobile"].setValue(e);
   }
-  handleValueChanges()
-  {
-    this.studentform.get('state')?.valueChanges.subscribe((response)=>{
-      this.stateiso=response;
-      this.getDistrict(this.stateiso[0].isoCode);  
-    });
-  }
+
   checkboxinput(e:any)
   {
     if(e.checked==true)
     {
-      this.studentform.patchValue({permanentaddress:this.studentform.value.currentaddress});
+      this.studentform.controls["permanentaddress"].setValue(this.studentform.value.currentaddress!);
+      //this.studentform.patchValue({permanentaddress:this.studentform.value.currentaddress});
     }
     if(e.checked==false)
     {
@@ -157,6 +201,7 @@ export class StudentComponent implements OnInit {
     if(y>2000)
     {
       alert("Allowed year of birth is <=2000");
+      this.studentform.controls['dob'].setValue('');
     }
   }
 

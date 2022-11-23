@@ -7,12 +7,17 @@ export interface IStudent{
     currentaddress:string;
     permanentaddress:string;
     sameaddress:boolean;
-    state:string;
-    district:string;
+    state1:string;
+    district1:string;
     roll:string;
     schoolname:string;
     studentmark:{
         subject:string;
-        mark:number;
+        mark:string;
     }[];    
+    agree:boolean;
+    captcha:string;
+    total:number;
+    percentage:number;
+    grade:string;
 }

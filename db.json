@@ -6,18 +6,127 @@
       "author": "typicode"
     },
     {
-      "name": "Meenakshi",
-      "email": "r@gmail.com",
-      "mobile": 9600673674,
+      "name": "RAJA MEENAKSHI N",
+      "dob": "1994-03-07",
+      "email": "20801912@vvvcollege.org",
+      "mobile": "9600673674",
       "gender": "Female",
-      "currentaddress": "vvv",
-      "permanentaddress": "vvv",
+      "currentaddress": "V.V.Vanniaperumal College for Women,\nMadurai Road,\nVirudhunagar.",
+      "permanentaddress": "V.V.Vanniaperumal College for Women,\nMadurai Road,\nVirudhunagar.",
       "sameaddress": true,
-      "state": "[object Object]",
-      "district": "[object Object]",
-      "roll": "30PP32",
-      "schoolname": "hgfhg",
+      "state1": "TamilNadu",
+      "district1": "Virudhunagar",
+      "roll": "20801912",
+      "schoolname": "jjdhua",
+      "studentmark": [
+        {
+          "subject": "jkjk",
+          "mark": "90"
+        },
+        {
+          "subject": "jhuh",
+          "mark": "90"
+        },
+        {
+          "subject": "jhiu",
+          "mark": "90"
+        },
+        {
+          "subject": "jhkju",
+          "mark": "90"
+        },
+        {
+          "subject": "jhk",
+          "mark": "90"
+        }
+      ],
+      "agree": true,
+      "captcha": "263S2V",
       "id": 2
+    },
+    {
+      "name": "RAJA MEENAKSHI N",
+      "dob": "2000-12-13",
+      "email": "20801912@vvvcollege.org",
+      "mobile": "9245109908",
+      "gender": "Female",
+      "currentaddress": "V.V.Vanniaperumal College for Women,\nMadurai Road,\nVirudhunagar.",
+      "permanentaddress": "V.V.Vanniaperumal College for Women,\nMadurai Road,\nVirudhunagar.",
+      "sameaddress": true,
+      "state1": "Andhra Pradesh",
+      "district1": "Tirupati",
+      "roll": "3412",
+      "schoolname": "dsafdfa",
+      "studentmark": [
+        {
+          "subject": "gha",
+          "mark": "90"
+        },
+        {
+          "subject": "gjh",
+          "mark": "90"
+        },
+        {
+          "subject": "gfhg",
+          "mark": "90"
+        },
+        {
+          "subject": "gjh",
+          "mark": "78"
+        },
+        {
+          "subject": "hgj",
+          "mark": "88"
+        }
+      ],
+      "total": 436,
+      "percentage": 87.2,
+      "grade": "B",
+      "agree": true,
+      "captcha": "263S2V",
+      "id": 3
+    },
+    {
+      "name": "RAJA MEENAKSHI N",
+      "dob": "2000-12-06",
+      "email": "20801912@vvvcollege.org",
+      "mobile": "7654678965",
+      "gender": "Female",
+      "currentaddress": "V.V.Vanniaperumal College for Women,\nMadurai Road,\nVirudhunagar.",
+      "permanentaddress": "V.V.Vanniaperumal College for Women,\nMadurai Road,\nVirudhunagar.",
+      "sameaddress": true,
+      "state1": "TamilNadu",
+      "district1": "Sivakasi",
+      "roll": "3241",
+      "schoolname": "adfasf",
+      "studentmark": [
+        {
+          "subject": "asf",
+          "mark": "87"
+        },
+        {
+          "subject": "sad",
+          "mark": "86"
+        },
+        {
+          "subject": "tgyh",
+          "mark": "83"
+        },
+        {
+          "subject": "sadfs",
+          "mark": "88"
+        },
+        {
+          "subject": "dsfsza",
+          "mark": "90"
+        }
+      ],
+      "total": 434,
+      "percentage": 0,
+      "grade": "B",
+      "agree": true,
+      "captcha": "263S2V",
+      "id": 4
     }
   ],
   "comments": [

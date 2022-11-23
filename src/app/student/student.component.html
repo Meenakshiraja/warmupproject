@@ -65,7 +65,7 @@
                 <label>Mobile:</label>
                 </div>
                 <div class="col-lg-3">
-                    <app-mobile></app-mobile>
+                    <app-mobile (mobileno)="after_mobileno_set($event)"></app-mobile>
                     <div *ngIf="form.mobile && form.mobile.invalid && form.mobile.touched" class="error">
                   <div *ngIf="form.mobile?.errors?.['required']">Phone is required</div>
                   <div *ngIf="form.mobile?.errors?.['pattern']">Mobile no. must have 10 digits.</div>
@@ -114,44 +114,44 @@
                 <div class="col-lg-2 offset-2">
                     <label>State</label>
                 </div>
-                <div class="col-lg-2">
+                <!-- <div class="col-lg-2">
                     <div class="dropdown-container">
                         <ng-multiselect-dropdown formControlName="state"
                             [placeholder]="'State'"
                             [settings]="dropdownsetting"
                             [data]="states">
                         </ng-multiselect-dropdown>
-                    <!-- <span *ngIf="form.state && form.state.invalid && form.state.touched" class="error">Please choose a state</span> -->
+                    <span *ngIf="form.state && form.state.invalid && form.state.touched" class="error">Please choose a state</span>
                     </div>
-                </div>
-                <!-- <div class="col-lg-2">
+                </div> -->
+                <div class="col-lg-2">
                     <select formControlName="state1" (change)="onstatechange()">
                         <option>Select State</option>
                         <option *ngFor="let state of statecity">{{state.state}}</option>
                     </select>
-                </div> -->
+                </div>
             </div>
             <br>
             <div class="row">
                 <div class="col-lg-2 offset-2">
                     <label>District</label>
                 </div>
-                <div class="col-lg-2">
+                <!-- <div class="col-lg-2">
                     <div class="dropdown-container">
                         <ng-multiselect-dropdown formControlName="district"
                             [placeholder]="'District'"
                             [settings]="dropdownsetting"
                             [data]="districts">
                         </ng-multiselect-dropdown>
-                    <!-- <span *ngIf="form.district && form.district.invalid && form.district.touched" class="error">Please choose a district</span> -->
+                    <span *ngIf="form.district && form.district.invalid && form.district.touched" class="error">Please choose a district</span>
                     </div>
-                </div>
-                <!-- <div class="col-lg-2">
+                </div> -->
+                <div class="col-lg-2">
                     <select formControlName="district1">
                         <option>Select District</option>
                         <option *ngFor="let c of city">{{c}}</option>
                     </select>
-                </div> -->
+                </div>
             </div>
             
             <br>
@@ -211,8 +211,8 @@
                                 </span>
                             </td>
                             <td>
-                                <div><input type="text" class="form-control" formControlName="mark" placeholder="Enter Mark"></div>
-                                <span *ngIf="studentmarks.controls[i].get('mark') && studentmarks.controls[i].get('mark')?.invalid && studentmarks.controls[i].get('mark')?.touched" class="error">
+                                <div><input type="text" class="form-control" formControlName="mark" placeholder="Enter Mark" (change)="calc()"></div>
+                                <span *ngIf="studentmarks.controls[i].get('mark') || studentmarks.controls[i].get('mark')?.invalid || studentmarks.controls[i].get('mark')?.touched" class="error">
                                     <span *ngIf="studentmarks.controls[i].get('mark')?.errors?.['required']">Mark required.</span>
                                     <span *ngIf="studentmarks.controls[i].get('mark')?.errors?.['max']">Max mark is 100
                                     </span>
@@ -220,7 +220,7 @@
                             </td>
                             <td>
                                 <div><button class="btn btn-sm btn-danger"
-                                    (click)="deletemark(i)">Delete</button></div>
+                                    (click)="deletemark(i);calc()">Delete</button></div>
                             </td>
                         </tr>                        
                     </ng-container>
@@ -234,6 +234,28 @@
                         </span></div></td>
                     </tr>
                 </table>
+            </div>
+            <br>
+            <div class="row">
+                 <div class="col-lg-1 offset-2">
+                    <label>Total</label>
+                </div>
+                <div class="col-lg-1">
+                    <input type="text" class="form-control" formControlName="total" />
+                </div>
+                
+                <div class="col-lg-1 offset-1">
+                      <label>Percentage</label>
+                </div>
+                <div class="col-lg-1">
+                      <input type="text" class="form-control" formControlName="percentage" value="{{percentage | number:'1.0-0'}}"/>
+                </div>  
+                <div class="col-lg-1 offset-1">
+                    <label>Grade</label>
+              </div>
+              <div class="col-lg-1">
+                    <input type="text" class="form-control" formControlName="grade" />
+              </div>  
             </div>
             <br>
             <div class="row">
@@ -288,11 +310,40 @@
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content">
         <div class="modal-header">
-            <button type="button" class="btn btn-primary">Print</button>
-            <button type="button" class="btn btn-success">Save as PDF</button>
+            <button type="button" class="btn btn-primary" printSectionId="print-section" ngxPrint>Print</button>
+            <button type="button" class="btn btn-success" (click)="generatepdf()">Save as PDF</button>
         </div>
-        <div class="modal-body">
-          Hide this modal and show the first with the button below.
+        <div class="modal-body" id="print-section">
+            <div *ngFor="let s of studentinfo; index as i">
+                <div *ngIf="s.id==studentinfo.length">
+          <table class="table">
+            <tr>
+                <td>Name : </td>
+                <td>{{s.name}}</td>
+            </tr>
+            <tr>
+                <td>Date of Birth : </td>
+                <td>{{s.dob}}</td>
+            </tr>
+            <tr>
+                <td>E-Mail : </td>
+                <td>{{s.email}}</td>
+            </tr>
+            <tr>
+                <td>Mobile : </td>
+                <td>{{s.mobile}}</td>
+            </tr>
+            <tr>
+                <td>Gender : </td>
+                <td>{{s.gender}}</td>
+            </tr>
+            <tr>
+                <td>Current Address: </td>
+                <td>{{s.currentaddress}}</td>
+            </tr>
+          </table>
+        </div>
+        </div>
         </div>
         <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>

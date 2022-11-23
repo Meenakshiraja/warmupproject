@@ -1,9 +1,9 @@
 <form [formGroup]="form">
-<select class="form-select-inline">
+<select class="form-select-inline" formControlName="mobile" #code>
     <option>+91</option>
     <option>+86</option>
     <option>+1</option>
     <option>+44</option>
     <option>+61</option>
-</select><input #no type="text" formControlName="mobile" class="form-control-inline" (change)="addmobile(no.value)"/>
+</select><input #no type="text" formControlName="mobile" class="form-control-inline" (change)="addmobile(code.value,no.value)"/>
 </form>

@@ -18,8 +18,8 @@ export class MobileComponent implements OnInit {
     this.form=this.rootform.control;
   }
 
-  addmobile(value:any){
+  addmobile(code:any,no:any){
+    let value:string=code+no;
     this.mobileno.emit(value);
   }
-
 }

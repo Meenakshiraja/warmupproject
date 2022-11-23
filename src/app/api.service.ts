@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import {HttpClient,HttpErrorResponse} from '@angular/common/http';
 import { catchError, map } from 'rxjs/operators';
+import { throwError } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -12,10 +13,7 @@ export class ApiService {
 
   poststudent(data:any){
     return this.http.post<any>("http://localhost:3000/posts",data).
-      pipe(map(res=>{
-        return res;
-      }))
-      // catchError(this.handleError))
+      pipe(catchError(this.handleError));
   }  
 
   private handleError(error: HttpErrorResponse) {
@@ -29,27 +27,21 @@ export class ApiService {
         `Backend returned code ${error.status}, body was: `, error.error);
     }
     // Return an observable with a user-facing error message.
-    // return throwError(() => new Error('Something bad happened; please try again later.'));
+    return throwError(() => new Error('Something bad happened; please try again later.'));
   }
 
   getstudent(){
-    return this.http.get("http://localhost:3000/posts").
-      pipe(map(res=>{
-        return res;
-      }))
+    return this.http.get("http://localhost:3000/posts").toPromise();
+
   }
 
   updatestudent(data:any,id:number){
     return this.http.put("http://localhost:3000/posts/"+id,data).
-      pipe(map(res=>{
-        return res;
-      }))
+      pipe(catchError(this.handleError));
   }
 
   deletestudent(id:number){
     return this.http.delete("http://localhost:3000/posts/"+id).
-      pipe(map(res=>{
-        return res;
-      }))
+      pipe(catchError(this.handleError));
   }
 }

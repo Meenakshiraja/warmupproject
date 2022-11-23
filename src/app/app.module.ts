@@ -7,6 +7,7 @@ import { AppComponent } from './app.component';
 import { StudentComponent } from './student/student.component';
 import { MobileComponent } from './mobile/mobile.component';
 import { HttpClientModule } from '@angular/common/http';
+import { NgxPrintModule } from 'ngx-print';
 
 @NgModule({
   declarations: [
@@ -19,7 +20,8 @@ import { HttpClientModule } from '@angular/common/http';
     AppRoutingModule,
     ReactiveFormsModule,
     NgMultiSelectDropDownModule,
-    HttpClientModule
+    HttpClientModule,
+    NgxPrintModule
   ],
   providers: [],
   bootstrap: [AppComponent]
