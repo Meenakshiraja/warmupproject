@@ -204,7 +204,7 @@
                             </td>
                             <td>
                                 <div><input type="text" class="form-control" formControlName="subject" placeholder="Enter Subject"></div>
-                                <span *ngIf="studentmarks.controls[i].get('subject') && studentmarks.controls[i].get('subject')?.invalid && studentmarks.controls[i].get('subject')?.touched" class="error">
+                                <span *ngIf="studentmarks.controls[i].get('subject') || studentmarks.controls[i].get('subject')?.invalid || studentmarks.controls[i].get('subject')?.touched" class="error">
                                     <span *ngIf="studentmarks.controls[i].get('subject')?.errors?.['required']">Subject Name required.</span>
                                     <span *ngIf="studentmarks.controls[i].get('subject')?.errors?.['pattern']">Subject Name should be in Alphanumerals.
                                     </span>
@@ -314,9 +314,13 @@
             <button type="button" class="btn btn-success" (click)="generatepdf()">Save as PDF</button>
         </div>
         <div class="modal-body" id="print-section">
-            <div *ngFor="let s of studentinfo; index as i">
+            <div *ngFor="let s of studentinfo | async ; index as i">
                 <div *ngIf="s.id==studentinfo.length">
           <table class="table">
+            <tr>
+                <td colspan="2" style="text-align: center;"><b>Personal Information</b></td>
+            </tr>
+            <br>
             <tr>
                 <td>Name : </td>
                 <td>{{s.name}}</td>
@@ -340,6 +344,47 @@
             <tr>
                 <td>Current Address: </td>
                 <td>{{s.currentaddress}}</td>
+            </tr>
+            <tr>
+                <td>Permanent Address: </td>
+                <td>{{s.permanentaddress}}</td>
+            </tr>
+            <tr>
+                <td>State: </td>
+                <td>{{s.state1}}</td>
+            </tr>
+            <tr>
+                <td>District: </td>
+                <td>{{s.district1}}</td>
+            </tr>
+            <br>
+            <tr>
+                <td colspan="2" style="text-align: center;"><b>Academic Information</b></td>
+            </tr>
+            <br>
+            <tr>
+                <td>Enrollment Number: </td>
+                <td>{{s.roll}}</td>
+            </tr>
+            <tr>
+                <td>School Name: </td>
+                <td>{{s.schoolname}}</td>
+            </tr>
+            <tr>
+                <table style="text-align: center;">
+                    <tr>
+                        <th width="15%">S.No.</th>
+                        <th width="40%">Subject Name</th>
+                        <th width="30%">Mark</th>
+                    </tr>
+                    <ng-container *ngFor="let mark of s.studentmark;index as i">
+                    <tr>
+                        <td>{{i+1}}</td>
+                        <td>{{mark.subject}}</td>
+                        <td>{{mark.mark}}</td>
+                    </tr>
+                    </ng-container>
+                </table>      
             </tr>
           </table>
         </div>

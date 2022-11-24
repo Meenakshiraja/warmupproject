@@ -71,13 +71,12 @@ export class StudentComponent implements OnInit {
     },(error:any)=>{
         console.log(error); 
     });
-
     this.getallstudent();
   }
 
-  async getallstudent()
+  getallstudent()
   {
-    this.studentinfo=await this.apiservice.getstudent();
+    this.studentinfo=this.apiservice.getstudent();
     console.log(this.studentinfo);
     // },(error)=>{
     //   console.log(error);
