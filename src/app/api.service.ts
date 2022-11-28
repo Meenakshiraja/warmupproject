@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import {HttpClient,HttpErrorResponse} from '@angular/common/http';
-import { catchError, map } from 'rxjs/operators';
-import { throwError } from 'rxjs';
+import { catchError } from 'rxjs/operators';
+import { Observable, throwError } from 'rxjs';
+import { IStudent } from './student/studentinterface';
 
 @Injectable({
   providedIn: 'root'
@@ -30,9 +31,9 @@ export class ApiService {
     return throwError(() => new Error('Something bad happened; please try again later.'));
   }
 
-  getstudent(){
-    return this.http.get("http://localhost:3000/posts").toPromise();
-
+  getstudent():Observable<IStudent>{
+    return this.http.get<IStudent>("http://localhost:3000/posts").
+      pipe(catchError(this.handleError));
   }
 
   updatestudent(data:any,id:number){

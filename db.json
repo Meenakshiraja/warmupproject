@@ -1,13 +1,8 @@
 {
   "posts": [
     {
-      "id": 1,
-      "title": "json-server",
-      "author": "typicode"
-    },
-    {
       "name": "RAJA MEENAKSHI N",
-      "dob": "1994-03-07",
+      "dob": "1994-07-03",
       "email": "20801912@vvvcollege.org",
       "mobile": "9600673674",
       "gender": "Female",
@@ -16,201 +11,78 @@
       "sameaddress": true,
       "state1": "TamilNadu",
       "district1": "Virudhunagar",
-      "roll": "20801912",
-      "schoolname": "jjdhua",
-      "studentmark": [
-        {
-          "subject": "jkjk",
-          "mark": "90"
-        },
-        {
-          "subject": "jhuh",
-          "mark": "90"
-        },
-        {
-          "subject": "jhiu",
-          "mark": "90"
-        },
-        {
-          "subject": "jhkju",
-          "mark": "90"
-        },
-        {
-          "subject": "jhk",
-          "mark": "90"
-        }
-      ],
-      "agree": true,
-      "captcha": "263S2V",
-      "id": 2
-    },
-    {
-      "name": "Priya",
-      "dob": "2000-12-25",
-      "email": "p@gmail.com",
-      "mobile": "9999887656",
-      "gender": "Female",
-      "currentaddress": "nnn",
-      "permanentaddress": "nnn",
-      "sameaddress": true,
-      "state1": "Andhra Pradesh",
-      "district1": "Vijayawada",
-      "roll": "879",
-      "schoolname": "njhbj",
-      "studentmark": [
-        {
-          "subject": "bvjh",
-          "mark": "90"
-        },
-        {
-          "subject": "jhgj",
-          "mark": "90"
-        },
-        {
-          "subject": "hgjhhhj",
-          "mark": "90"
-        },
-        {
-          "subject": "jhgj",
-          "mark": "90"
-        },
-        {
-          "subject": "hbj",
-          "mark": "90"
-        }
-      ],
-      "total": 450,
-      "percentage": 0,
-      "grade": "B",
-      "agree": true,
-      "captcha": "263S2V",
-      "id": 3
-    },
-    {
-      "name": "Karthik",
-      "dob": "2000-12-21",
-      "email": "karthik@gmail.com",
-      "mobile": "9842238584",
-      "gender": "Male",
-      "currentaddress": "407, Ramamoorthy Road,VNR",
-      "permanentaddress": "407, Ramamoorthy Road,VNR",
-      "sameaddress": true,
-      "state1": "TamilNadu",
-      "district1": "Virudhunagar",
-      "roll": "98493",
-      "schoolname": "KVS",
+      "roll": "77767",
+      "schoolname": "PSC",
       "studentmark": [
         {
           "subject": "Tamil",
-          "mark": "89"
+          "mark": "90"
         },
         {
           "subject": "English",
-          "mark": "78"
-        },
-        {
-          "subject": "Hindi",
-          "mark": "99"
+          "mark": "80"
         },
         {
           "subject": "Maths",
-          "mark": "90"
+          "mark": "100"
         },
         {
           "subject": "Science",
-          "mark": "80"
+          "mark": "87"
+        },
+        {
+          "subject": "Social",
+          "mark": "88"
         }
       ],
-      "total": 436,
-      "percentage": 0,
+      "total": 445,
+      "percentage": 89,
       "grade": "B",
       "agree": true,
       "captcha": "263S2V",
-      "id": 4
+      "id": 1
     },
     {
-      "name": "Veera",
-      "dob": "2000-12-06",
+      "name": "Venba",
+      "dob": "2000-12-10",
       "email": "v@gmail.com",
-      "mobile": "9876787656",
+      "mobile": "+917696767565",
       "gender": "Female",
-      "currentaddress": "v fger",
-      "permanentaddress": "v fger",
+      "currentaddress": "jfajja",
+      "permanentaddress": "jfajja",
       "sameaddress": true,
-      "state1": "Andhra Pradesh",
-      "district1": "Vijayawada",
-      "roll": "7687",
-      "schoolname": "jhghkj",
+      "state1": "TamilNadu",
+      "district1": "Coimbatore",
+      "roll": "7979",
+      "schoolname": "nmbjhgj",
       "studentmark": [
         {
-          "subject": "djf",
+          "subject": "hh",
           "mark": "90"
         },
         {
-          "subject": "hjgj",
+          "subject": "huh",
           "mark": "90"
         },
         {
-          "subject": "jhgj",
+          "subject": "hjbjh",
           "mark": "90"
         },
         {
-          "subject": "hvbj",
+          "subject": "jjj",
           "mark": "90"
         },
         {
-          "subject": "vjh",
+          "subject": "ygfy",
           "mark": "90"
         }
       ],
       "total": 450,
-      "percentage": 0,
+      "percentage": 90,
       "grade": "B",
       "agree": true,
       "captcha": "263S2V",
-      "id": 5
-    },
-    {
-      "name": "veena",
-      "dob": "2000-12-20",
-      "email": "20801912@vvvcollege.org",
-      "mobile": "9876789675",
-      "gender": "Female",
-      "currentaddress": "V.V.Vanniaperumal College for Women,\nMadurai Road,\nVirudhunagar.",
-      "permanentaddress": "V.V.Vanniaperumal College for Women,\nMadurai Road,\nVirudhunagar.",
-      "sameaddress": true,
-      "state1": "Andhra Pradesh",
-      "district1": "Vijayawada",
-      "roll": "5678",
-      "schoolname": "gfcjhg",
-      "studentmark": [
-        {
-          "subject": "hvbh",
-          "mark": "90"
-        },
-        {
-          "subject": "gh",
-          "mark": "90"
-        },
-        {
-          "subject": "gfghgt",
-          "mark": "90"
-        },
-        {
-          "subject": "vhmg",
-          "mark": "90"
-        },
-        {
-          "subject": "jhg",
-          "mark": "90"
-        }
-      ],
-      "total": 450,
-      "percentage": 0,
-      "grade": "B",
-      "agree": true,
-      "captcha": "263S2V",
-      "id": 6
+      "id": 2
     }
   ],
   "comments": [

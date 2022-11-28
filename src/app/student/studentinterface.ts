@@ -17,7 +17,7 @@ export interface IStudent{
     }[];    
     agree:boolean;
     captcha:string;
-    total:number;
-    percentage:number;
+    total:string;
+    percentage:string;
     grade:string;
 }

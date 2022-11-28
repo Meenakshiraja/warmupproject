@@ -1,5 +1,5 @@
 import { Component, OnInit, Output,EventEmitter } from '@angular/core';
-import { FormGroup, FormGroupDirective } from '@angular/forms';
+import { FormBuilder, FormGroup,Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-mobile',
@@ -12,14 +12,22 @@ export class MobileComponent implements OnInit {
 
   form!:FormGroup;
 
-  constructor(private rootform:FormGroupDirective) { }
+  constructor(private fb:FormBuilder) { }
 
   ngOnInit(): void {
-    this.form=this.rootform.control;
+    this.form=this.fb.group({
+      code:[],
+      mobileno:[,[Validators.required,Validators.pattern('[0-9]{10}')]]
+    })
   }
 
   addmobile(code:any,no:any){
     let value:string=code+no;
     this.mobileno.emit(value);
+  }
+
+  get f()
+  {
+    return this.form.get('mobileno');
   }
 }

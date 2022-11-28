@@ -14,9 +14,13 @@ import html2canvas  from 'html2canvas';
 export class StudentComponent implements OnInit {
 
   studentmodel={} as IStudent;
+
+  // studentform: FormGroup = {} as FormGroup;
   
   percentage:number=0;
   studentinfo:any;
+  s:any={};
+  
   dropdownsetting:any;
   // states:IState[]=[];
   // districts:ICity[]=[];
@@ -25,13 +29,23 @@ export class StudentComponent implements OnInit {
   // cscity = require('country-state-city').City;
   genders=['Male','Female','Other'];
   statecity=[
-    {state:"TamilNadu",city:["Chennai","Sivakasi","Virudhunagar","Madurai","Salem"]},
-    {state:"Andhra Pradesh",city:["Vijayawada","Visakhapatnam","Tirupati","Nellore"]},
-    {state:"Kerala",city:["Thiruvananthapuram","Kozhikode","Kochi"]}
+    {state:"TamilNadu",city:["Coimbatore","Virudhunagar","Madurai","Dindigul","Chennai","Theni"]},
+    {state:"Andhra Pradesh",city:["Srikakulam","Visakhapatnam","Tirupati","Chittoor"]},
+    {state:"Kerala",city:["Thiruvananthapuram","kollam","Kochi","Palakkad","Alappuzha"]}
   ];
   city:string[]=[];
 
-  constructor(private fb:FormBuilder,private apiservice:ApiService) { }
+  constructor(private fb:FormBuilder,private apiservice:ApiService) {
+    this.apiservice.getstudent()
+    .subscribe(
+      {        
+        next:(res)=>{
+          this.studentinfo=res;
+        },
+        error:(err:any)=>{console.log(err);},
+        complete:()=>{}
+      });
+   }
 
   ngOnInit(): void {
     // this.initDropdownSettings();
@@ -44,7 +58,7 @@ export class StudentComponent implements OnInit {
     name:['',Validators.compose([Validators.required,Validators.pattern('[a-zA-Z .]*')])],
     dob:['',Validators.required],
     email:['', Validators.compose([Validators.required, Validators.email])],
-    mobile:['',Validators.compose([Validators.required,Validators.pattern('[0-9]{10}')])],
+    mobile:[],
     gender:['',Validators.required],
     currentaddress:['',Validators.required],
     permanentaddress:['',Validators.required],
@@ -65,22 +79,24 @@ export class StudentComponent implements OnInit {
 
   poststudentdetails()
   {
-    this.apiservice.poststudent(this.studentform.value).subscribe(res=>{
-      console.log(res);
-      alert("Student added Successfully")
-    },(error:any)=>{
-        console.log(error); 
-    });
-    this.getallstudent();
+    this.apiservice.poststudent(this.studentform.value)
+    .subscribe(
+      {
+        next:(res)=>{
+          alert("Student added Successfully");
+        },
+        error:(err:any)=>{console.log(err);},
+        complete:()=>{}
+    });        
+    this.s=this.studentform.value;
   }
 
-  getallstudent()
-  {
-    this.studentinfo=this.apiservice.getstudent();
-    console.log(this.studentinfo);
-    // },(error)=>{
-    //   console.log(error);
-    // });
+  updatestudent(id:number){
+
+  }
+
+  delete(id:number){
+
   }
 
   generatepdf()
@@ -101,8 +117,8 @@ export class StudentComponent implements OnInit {
   addmark()
   {
     ((this.studentform as FormGroup).get('studentmark') as FormArray).push(this.fb.group({
-      subject:['',Validators.compose([Validators.required,Validators.pattern('[a-zA-Z0-9 .]*')])],
-      mark:['',Validators.compose([Validators.required,Validators.max(100)])]
+      subject:['',[Validators.required,Validators.pattern('[a-zA-Z0-9 .]*')]],
+      mark:['',[Validators.required,Validators.max(100)]]
     }));
   }
   calc()
@@ -113,12 +129,12 @@ export class StudentComponent implements OnInit {
     {
       total+=Number(this.studentmarks.value[j].mark);
     }
-    console.log(total);
+    
     this.studentform.controls['total'].setValue(total);
 
     this.percentage=total/((this.studentmarks.length)*100)*100;
     // percentage | number:'1.0-0';
-    //this.studentform.controls['percentage'].setValue(percentage);
+    this.studentform.controls['percentage'].setValue(this.percentage);
     //this.studentform.patchValue({percentage:String(percentage)});
     if((this.percentage<=100)&&(this.percentage>90))
       grade='A';
@@ -177,7 +193,8 @@ export class StudentComponent implements OnInit {
   // }
 
   after_mobileno_set(e:any){
-    //this.studentform.controls["mobile"].setValue(e);
+    console.log(e);
+    this.studentform.controls["mobile"].setValue(e);
   }
 
   checkboxinput(e:any)
@@ -189,7 +206,7 @@ export class StudentComponent implements OnInit {
     }
     if(e.checked==false)
     {
-      this.studentform.patchValue({permanentaddress:''});
+      this.studentform.controls["permanentaddress"].setValue('');
     }
   }
 

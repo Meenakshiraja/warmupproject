@@ -5,7 +5,44 @@
         </div>
     </div>
 </nav>
-
+<br>
+    <div class="row">
+        <div class="table-responsive">
+            <table class="table table-bordered" id="datatable" role="grid" >
+                <thead class="bg-primary text-white">
+                    <tr role="row">
+                        <th>S.No</th>
+                        <th>Name</th>
+                        <th>Date of Birth</th>
+                        <th>E-Mail</th>
+                        <th>Address</th>
+                        <th>State</th>
+                        <th>Roll No.</th>
+                        <th>Total</th>
+                        <th>Percentage</th>
+                        <th>Grade</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let item of studentinfo;index as i">
+                        <td>{{i+1}}</td>
+                        <td>{{item.name}}</td>
+                        <td>{{item.dob}}</td>
+                        <td>{{item.email}}</td>
+                        <td>{{item.permanentaddress}}</td>
+                        <td>{{item.state1}}</td>
+                        <td>{{item.roll}}</td>
+                        <td>{{item.total}}</td>
+                        <td>{{item.percentage}}</td>
+                        <td>{{item.grade}}</td>
+                        <td><button (click)="updatestudent(item.id)" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">Edit</button> | 
+                            <button (click)="delete(item.id)" class="btn btn-danger">Delete</button></td> 
+                    </tr>
+                </tbody> 
+            </table>                
+        </div>
+   </div>
 
 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-xl">
@@ -66,10 +103,6 @@
                 </div>
                 <div class="col-lg-3">
                     <app-mobile (mobileno)="after_mobileno_set($event)"></app-mobile>
-                    <div *ngIf="form.mobile && form.mobile.invalid && form.mobile.touched" class="error">
-                  <div *ngIf="form.mobile?.errors?.['required']">Phone is required</div>
-                  <div *ngIf="form.mobile?.errors?.['pattern']">Mobile no. must have 10 digits.</div>
-                </div>
                 </div>
             </div>
             <br>
@@ -79,7 +112,6 @@
                 </div>
                 <div class="col-lg-3">
                     <div class="form-check-inline" *ngFor="let gen of genders">
-                        
                         <input type="radio" [value]="gen" class="form-check-input" formControlName="gender">&nbsp;{{gen}}
                     </div>
                     <span *ngIf="form.gender && form.gender.invalid && form.gender.touched" class="error">Please choose your gender</span>
@@ -204,7 +236,7 @@
                             </td>
                             <td>
                                 <div><input type="text" class="form-control" formControlName="subject" placeholder="Enter Subject"></div>
-                                <span *ngIf="studentmarks.controls[i].get('subject') || studentmarks.controls[i].get('subject')?.invalid || studentmarks.controls[i].get('subject')?.touched" class="error">
+                                <span *ngIf="studentmarks.controls[i].get('subject') && studentmarks.controls[i].get('subject')?.invalid && studentmarks.controls[i].get('subject')?.touched" class="error">
                                     <span *ngIf="studentmarks.controls[i].get('subject')?.errors?.['required']">Subject Name required.</span>
                                     <span *ngIf="studentmarks.controls[i].get('subject')?.errors?.['pattern']">Subject Name should be in Alphanumerals.
                                     </span>
@@ -212,7 +244,7 @@
                             </td>
                             <td>
                                 <div><input type="text" class="form-control" formControlName="mark" placeholder="Enter Mark" (change)="calc()"></div>
-                                <span *ngIf="studentmarks.controls[i].get('mark') || studentmarks.controls[i].get('mark')?.invalid || studentmarks.controls[i].get('mark')?.touched" class="error">
+                                <span *ngIf="studentmarks.controls[i].get('mark') && studentmarks.controls[i].get('mark')?.invalid && studentmarks.controls[i].get('mark')?.touched" class="error">
                                     <span *ngIf="studentmarks.controls[i].get('mark')?.errors?.['required']">Mark required.</span>
                                     <span *ngIf="studentmarks.controls[i].get('mark')?.errors?.['max']">Max mark is 100
                                     </span>
@@ -228,7 +260,7 @@
                         <td colspan="5" class="text-center">
                             <div><button class="btn btn-success" (click)="addmark()">Add mark
                             </button>
-                        <span *ngIf="studentmarks.invalid || studentmarks.pristine" class="error">
+                        <span *ngIf="studentmarks.invalid && studentmarks.touched" class="error">
                             <span *ngIf="studentmarks.errors?.['required']">Mark required.</span>
                             <span *ngIf="studentmarks.errors?.['minLength']">Minimum 5 Marks needed</span>
                         </span></div></td>
@@ -307,15 +339,13 @@
 </div>
 
 <div class="modal fade" id="exampleModalToggle2" aria-hidden="true" aria-labelledby="exampleModalToggleLabel2" tabindex="-1">
-    <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
       <div class="modal-content">
         <div class="modal-header">
             <button type="button" class="btn btn-primary" printSectionId="print-section" ngxPrint>Print</button>
             <button type="button" class="btn btn-success" (click)="generatepdf()">Save as PDF</button>
         </div>
         <div class="modal-body" id="print-section">
-            <div *ngFor="let s of studentinfo | async ; index as i">
-                <div *ngIf="s.id==studentinfo.length">
           <table class="table">
             <tr>
                 <td colspan="2" style="text-align: center;"><b>Personal Information</b></td>
@@ -370,12 +400,12 @@
                 <td>School Name: </td>
                 <td>{{s.schoolname}}</td>
             </tr>
-            <tr>
-                <table style="text-align: center;">
+            <tr><td colspan="2" style="text-align: center;">
+                <table  class="table table-bordered">
                     <tr>
-                        <th width="15%">S.No.</th>
-                        <th width="40%">Subject Name</th>
-                        <th width="30%">Mark</th>
+                        <th style="width: 5%;">S.No.</th>
+                        <th style="width: 20%;">Subject Name</th>
+                        <th style="width: 20%;">Mark</th>
                     </tr>
                     <ng-container *ngFor="let mark of s.studentmark;index as i">
                     <tr>
@@ -384,11 +414,22 @@
                         <td>{{mark.mark}}</td>
                     </tr>
                     </ng-container>
-                </table>      
+                </table>  </td>    
+            </tr>
+            <br>
+            <tr>
+                <td>Total: </td>
+                <td>{{s.total}}</td>
+            </tr>
+            <tr>
+                <td>Percentage: </td>
+                <td>{{s.percentage}}</td>
+            </tr>
+            <tr>
+                <td>Grade: </td>
+                <td>{{s.grade}}</td>
             </tr>
           </table>
-        </div>
-        </div>
         </div>
         <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>

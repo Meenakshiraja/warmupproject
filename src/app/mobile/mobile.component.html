@@ -1,9 +1,14 @@
 <form [formGroup]="form">
-<select class="form-select-inline" formControlName="mobile" #code>
+<select class="form-select-inline" formControlName="code" #code>
     <option>+91</option>
     <option>+86</option>
     <option>+1</option>
     <option>+44</option>
     <option>+61</option>
-</select><input #no type="text" formControlName="mobile" class="form-control-inline" (change)="addmobile(code.value,no.value)"/>
+</select>
+<input #no type="text" formControlName="mobileno" class="form-control-inline" (change)="addmobile(code.value,no.value)" maxlength="10"/>
+<div *ngIf="f && f.invalid && f.touched" class="error">
+    <div *ngIf="f?.errors?.['required']">Phone no. is required</div>
+    <div *ngIf="f?.errors?.['pattern']">Mobile no. must have 10 digits.</div>
+  </div>
 </form>
