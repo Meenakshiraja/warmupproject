@@ -1,7 +1,7 @@
 <nav class="navbar navbar-light bg-primary">
     <div class="container-fluid">
         <div class="d-flex">
-            <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#exampleModal">Add Student</button>
+            <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#exampleModal" (click)="onAddClick()">Add Student</button>
         </div>
     </div>
 </nav>
@@ -36,7 +36,7 @@
                         <td>{{item.total}}</td>
                         <td>{{item.percentage}}</td>
                         <td>{{item.grade}}</td>
-                        <td><button (click)="updatestudent(item.id)" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">Edit</button> | 
+                        <td><button (click)="onEditClick(item,i+1)" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">Edit</button> | 
                             <button (click)="delete(item.id)" class="btn btn-danger">Delete</button></td> 
                     </tr>
                 </tbody> 
@@ -63,9 +63,9 @@
                 </div>
                 <div class="col-lg-2">
                     <input type="text" class="form-control" formControlName="name" />
-                    <span *ngIf="form.name && form.name.invalid && form.name.touched" class="error">
-                      <span *ngIf="form.name?.errors?.['required']">Please enter Student name</span>
-                      <span *ngIf="form.name?.errors?.['pattern']">Name can contain only alphabet and space</span>
+                    <span *ngIf="form['name'] && form['name'].invalid && form['name'].touched" class="error">
+                      <span *ngIf="form['name']?.errors?.['required']">Please enter Student name</span>
+                      <span *ngIf="form['name']?.errors?.['pattern']">Name can contain only alphabet and space</span>
                     </span> 
                 </div>
                 </div>
@@ -78,7 +78,7 @@
                 </div>
                 <div class="col-lg-2">
                     <input #bd type="date" class="form-control" formControlName="dob" (blur)="valid(bd.value)" max="2000-12-31"/>
-                    <span *ngIf="form.dob && form.dob.invalid && form.dob.touched" class="error">
+                    <span *ngIf="form['dob'] && form['dob'].invalid && form['dob'].touched" class="error">
                       Please enter Date of Birth                     
                     </span> 
                 </div>
@@ -92,7 +92,7 @@
                 </div>
                 <div class="col-lg-2">
                     <input type="text" class="form-control" formControlName="email">
-                    <span *ngIf="form.email && form.email.invalid && form.email.touched" class="error">Please enter a valid email Id</span>
+                    <span *ngIf="form['email'] && form['email'].invalid && form['email'].touched" class="error">Please enter a valid email Id</span>
                 </div>
             </div>
             </div>
@@ -114,7 +114,7 @@
                     <div class="form-check-inline" *ngFor="let gen of genders">
                         <input type="radio" [value]="gen" class="form-check-input" formControlName="gender">&nbsp;{{gen}}
                     </div>
-                    <span *ngIf="form.gender && form.gender.invalid && form.gender.touched" class="error">Please choose your gender</span>
+                    <span *ngIf="form['gender'] && form['gender'].invalid && form['gender'].touched" class="error">Please choose your gender</span>
                 </div>
             </div>
             <br>
@@ -124,7 +124,7 @@
                 </div>
                 <div class="col-lg-3">
                     <textarea rows="4" class="form-control" formControlName="currentaddress"></textarea>
-                    <span *ngIf="form.currentaddress && form.currentaddress.invalid && form.currentaddress.touched" class="error">Please enter your address</span>
+                    <span *ngIf="form['currentaddress'] && form['currentaddress'].invalid && form['currentaddress'].touched" class="error">Please enter your address</span>
                 </div>
             </div>
             <br>
@@ -135,7 +135,7 @@
                 </div>
                 <div class="col-lg-3">
                     <textarea rows="4" class="form-control" formControlName="permanentaddress"></textarea>
-                    <span *ngIf="form.permanentaddress && form.permanentaddress.invalid && form.permanentaddress.touched" class="error">Please enter your address</span>
+                    <span *ngIf="form['permanentaddress'] && form['permanentaddress'].invalid && form['permanentaddress'].touched" class="error">Please enter your address</span>
                     <br>
                     <input type="checkbox" class="form-check-input" formControlName="sameaddress" (change)="checkboxinput($event.target)">
                     <label class="form-check-label">&nbsp;Same as Current address</label>
@@ -196,9 +196,9 @@
                 </div>
                 <div class="col-lg-2">
                     <input type="text" class="form-control" formControlName="roll" />
-                    <span *ngIf="form.roll && form.roll.invalid && form.roll.touched" class="error">
-                        <span *ngIf="form.roll?.errors?.['required']">Please enter Student Roll No.</span>
-                        <span *ngIf="form.roll?.errors?.['pattern']">Must be in Alphanumerals</span>
+                    <span *ngIf="form['roll'] && form['roll'].invalid && form['roll'].touched" class="error">
+                        <span *ngIf="form['roll']?.errors?.['required']">Please enter Student Roll No.</span>
+                        <span *ngIf="form['roll']?.errors?.['pattern']">Must be in Alphanumerals</span>
                     </span> 
                 </div>
                 
@@ -207,9 +207,9 @@
                 </div>
                 <div class="col-lg-2">
                       <input type="text" class="form-control" formControlName="schoolname" />
-                      <span *ngIf="form.schoolname && form.schoolname.invalid && form.schoolname.touched" class="error">
-                        <span *ngIf="form.schoolname?.errors?.['required']">Please enter Student name</span>
-                        <span *ngIf="form.schoolname?.errors?.['pattern']">Must be in Alphanumerals</span>
+                      <span *ngIf="form['schoolname'] && form['schoolname'].invalid && form['schoolname'].touched" class="error">
+                        <span *ngIf="form['schoolname']?.errors?.['required']">Please enter Student name</span>
+                        <span *ngIf="form['schoolname']?.errors?.['pattern']">Must be in Alphanumerals</span>
                     </span> 
                 </div>  
             </div>
@@ -305,9 +305,9 @@
                 </div>
                 <div class="col-lg-2">
                 <input type="text" class="form-control" formControlName="captcha" id="captcha" placeholder="Enter captcha text">
-                <span *ngIf="form.captcha && form.captcha.invalid && form.captcha.touched" class="error">
-                    <span *ngIf="form.captcha?.errors?.['required']">Please enter captcha text</span>
-                    <span *ngIf="form.captcha?.errors?.['pattern']">Captcha Text is Wrong... Try again</span>
+                <span *ngIf="form['captcha'] && form['captcha'].invalid && form['captcha'].touched" class="error">
+                    <span *ngIf="form['captcha']?.errors?.['required']">Please enter captcha text</span>
+                    <span *ngIf="form['captcha']?.errors?.['pattern']">Captcha Text is Wrong... Try again</span>
                 </span> </div>
             </div>
             <br>
@@ -316,7 +316,7 @@
                 <div class="form-check">
                     <input type="checkbox" class="form-check-input" formControlName="agree"/>
                         <label class="form-check-label">I Agree</label><br>
-                        <span *ngIf="form.agree && form.agree.invalid && form.agree.touched" class="error">Please check I agree</span>
+                        <span *ngIf="form['agree'] && form['agree'].invalid && form['agree'].touched" class="error">Please check I agree</span>
                 </div>
                 </div>
             </div>

@@ -2,7 +2,7 @@ export interface IStudent{
     name:string;
     dob:any;
     email:string;
-    mobile:number;
+    mobile:string;
     gender:string;
     currentaddress:string;
     permanentaddress:string;
