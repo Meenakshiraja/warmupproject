@@ -11,11 +11,12 @@ import html2canvas  from 'html2canvas';
   templateUrl: './student.component.html',
   styleUrls: ['./student.component.css']
 })
+
 export class StudentComponent implements OnInit {
 
-  studentmodel={} as IStudent;
-
-  // studentform: FormGroup = {} as FormGroup;
+  setting={} as IStudent;
+  id:number=0;
+  studentform: FormGroup = {} as FormGroup;
   
   percentage:number=0;
   studentinfo:any;
@@ -37,7 +38,7 @@ export class StudentComponent implements OnInit {
 
   constructor(private fb:FormBuilder,private apiservice:ApiService) {
     this.apiservice.getstudent()
-    .subscribe(
+      .subscribe(
       {        
         next:(res)=>{
           this.studentinfo=res;
@@ -51,52 +52,137 @@ export class StudentComponent implements OnInit {
     // this.initDropdownSettings();
     // this.getStates();
     // this.handleValueChanges();
+    this.buildform();
   }
 
-  studentform = this.fb.group
+onAddClick()
+{
+  this.setting = {} as IStudent; //empty settings since new form is needed
+  this.buildform(); //call build form to open an empty form
+}
+
+onEditClick(setting:any,i:number) //invoked from table Edit button click
+{
+	this.setting = setting; //set the selected setting into the setting variable
+	this.buildform(); //call build form to open form with values filled
+  this.id=i;
+}
+
+buildform()
+{
+  if (JSON.stringify(this.setting) == '{}') {
+    this.setting = {
+      name:'',
+      dob:'',
+      email:'',
+      mobile:'',
+      gender:'',
+      currentaddress:'',
+      permanentaddress:'',
+      sameaddress:false,
+      state1:'',
+      district1:'',
+      roll:'',
+      schoolname:'',
+      studentmark:[],
+      agree:false,
+      captcha:'',
+      total:'',
+      percentage:'',
+      grade:''  
+    };
+  }
+  
+  this.studentform = this.fb.group
   ({
-    name:['',Validators.compose([Validators.required,Validators.pattern('[a-zA-Z .]*')])],
-    dob:['',Validators.required],
-    email:['', Validators.compose([Validators.required, Validators.email])],
-    mobile:[],
-    gender:['',Validators.required],
-    currentaddress:['',Validators.required],
-    permanentaddress:['',Validators.required],
-    sameaddress:[false],
+    name:[this.setting.name,Validators.compose([Validators.required,Validators.pattern('[a-zA-Z .]*')])],
+    dob:[this.setting.dob,Validators.required],
+    email:[this.setting.email, Validators.compose([Validators.required, Validators.email])],
+    mobile:[this.setting.mobile],
+    gender:[this.setting.gender,Validators.required],
+    currentaddress:[this.setting.currentaddress,Validators.required],
+    permanentaddress:[this.setting.permanentaddress,Validators.required],
+    sameaddress:[this.setting.sameaddress],
     // state:['',Validators.required],
     // district:['',Validators.required],
-    state1:['',Validators.required],
-    district1:['',Validators.required],
-    roll:['',Validators.compose([Validators.required,Validators.pattern('[a-zA-Z0-9 .]*')])],
-    schoolname:['',Validators.compose([Validators.required,Validators.pattern('[a-zA-Z0-9 .]*')])],
-    studentmark:this.fb.array([],Validators.compose([Validators.required,Validators.minLength(5)])),
-    total:[0],
-    percentage:[0],
-    grade:[''],
-    agree:[false,Validators.requiredTrue],
-    captcha:['',[Validators.required,Validators.pattern('[263S2V]{6}')]],
+    state1:[this.setting.state1,Validators.required],
+    district1:[this.setting.district1,Validators.required],
+    roll:[this.setting.roll,Validators.compose([Validators.required,Validators.pattern('[a-zA-Z0-9 .]*')])],
+    schoolname:[this.setting.schoolname,Validators.compose([Validators.required,Validators.pattern('[a-zA-Z0-9 .]*')])],
+    studentmark:this.fb.array(this.buildmarkform(this.setting.studentmark),Validators.compose([Validators.required,Validators.minLength(5)])),
+    total:[this.setting.total],
+    percentage:[this.setting.percentage],
+    grade:[this.setting.grade],
+    agree:[this.setting.agree,Validators.requiredTrue],
+    captcha:[this.setting.captcha,[Validators.required,Validators.pattern('[263S2V]{6}')]],
   });
+}
+
+buildmarkform(marks:any): any {
+  if (!marks) {
+    marks = [];
+  }
+  var marks_array: any[] = [];
+  if (marks && marks.length > 0) {
+    var section_count = 0;
+    for (const mark of marks) {
+      marks_array.push(this.fb.group({
+        subject: [mark.subject],
+        mark: [mark.mark],
+      }));
+      section_count++;
+    }
+  }
+  const remaining_count = 1 - marks.length;
+  if (remaining_count && remaining_count > 0) {
+    for (let index = 0; index < remaining_count; index++) {
+      marks_array.push(this.fb.group({
+        subject: [""],
+        mark: [""],
+      }));
+    }
+  }
+  return marks_array;
+}
 
   poststudentdetails()
   {
-    this.apiservice.poststudent(this.studentform.value)
-    .subscribe(
-      {
-        next:(res)=>{
-          alert("Student added Successfully");
-        },
-        error:(err:any)=>{console.log(err);},
-        complete:()=>{}
-    });        
+    if (JSON.stringify(this.setting) == '{}') 
+    {
+        this.apiservice.poststudent(this.studentform.value)
+          .subscribe(
+          {
+            next:(res)=>{
+            alert("Student added Successfully");
+          },
+          error:(err:any)=>{console.log(err);},
+          complete:()=>{}
+        });        
+    }
+    else{
+      this.apiservice.updatestudent(this.studentform.value,this.id)
+          .subscribe(
+          {
+            next:(res)=>{
+            alert("Student data updated Successfully");
+          },
+          error:(err:any)=>{console.log(err);},
+          complete:()=>{}
+        });        
+    }
     this.s=this.studentform.value;
   }
 
-  updatestudent(id:number){
-
-  }
-
   delete(id:number){
-
+    this.apiservice.deletestudent(id)
+          .subscribe(
+          {
+            next:(res)=>{
+            alert("One record is removed");
+          },
+          error:(err:any)=>{console.log(err);},
+          complete:()=>{}
+        });
   }
 
   generatepdf()
@@ -223,7 +309,7 @@ export class StudentComponent implements OnInit {
 
   get form()
   {
-    return this.studentform.controls;
+    return ((this.studentform as FormGroup).controls);
   }
 
   get studentmarks() {
