@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder,Validators,FormArray,FormGroup } from '@angular/forms';
+import { FormBuilder,Validators,FormArray,FormGroup, FormControl } from '@angular/forms';
 // import { IState, ICity } from 'country-state-city';
 import { IStudent } from './studentinterface';
 import { ApiService } from '../api.service';
@@ -21,7 +21,9 @@ export class StudentComponent implements OnInit {
   percentage:number=0;
   studentinfo:any;
   s:any={};
-  
+  m:any='';
+  flag=false;
+  c:any;
   dropdownsetting:any;
   // states:IState[]=[];
   // districts:ICity[]=[];
@@ -53,10 +55,13 @@ export class StudentComponent implements OnInit {
     // this.getStates();
     // this.handleValueChanges();
     this.buildform();
+    this.flag=false;
   }
 
 onAddClick()
 {
+  this.flag=false;
+  this.m='';
   this.setting = {} as IStudent; //empty settings since new form is needed
   this.buildform(); //call build form to open an empty form
 }
@@ -64,7 +69,14 @@ onAddClick()
 onEditClick(setting:any,i:number) //invoked from table Edit button click
 {
 	this.setting = setting; //set the selected setting into the setting variable
-	this.buildform(); //call build form to open form with values filled
+
+	var city1=this.statecity.filter(a=>a.state==this.setting.state1);
+  this.city=city1[0].city;
+  this.c=this.setting.district1;
+  this.m=this.setting.mobile;
+  this.flag=!this.flag;
+  setTimeout(()=>{this.buildform();},200);
+   //call build form to open form with values filled
   this.id=i;
 }
 
@@ -96,7 +108,7 @@ buildform()
   this.studentform = this.fb.group
   ({
     name:[this.setting.name,Validators.compose([Validators.required,Validators.pattern('[a-zA-Z .]*')])],
-    dob:[this.setting.dob,Validators.required],
+    dob:[this.setting.dob,[Validators.required,this.valid.bind(this)]],
     email:[this.setting.email, Validators.compose([Validators.required, Validators.email])],
     mobile:[this.setting.mobile],
     gender:[this.setting.gender,Validators.required],
@@ -106,7 +118,7 @@ buildform()
     // state:['',Validators.required],
     // district:['',Validators.required],
     state1:[this.setting.state1,Validators.required],
-    district1:[this.setting.district1,Validators.required],
+    district1:[this.c,Validators.required],
     roll:[this.setting.roll,Validators.compose([Validators.required,Validators.pattern('[a-zA-Z0-9 .]*')])],
     schoolname:[this.setting.schoolname,Validators.compose([Validators.required,Validators.pattern('[a-zA-Z0-9 .]*')])],
     studentmark:this.fb.array(this.buildmarkform(this.setting.studentmark),Validators.compose([Validators.required,Validators.minLength(5)])),
@@ -133,21 +145,21 @@ buildmarkform(marks:any): any {
       section_count++;
     }
   }
-  const remaining_count = 1 - marks.length;
-  if (remaining_count && remaining_count > 0) {
-    for (let index = 0; index < remaining_count; index++) {
-      marks_array.push(this.fb.group({
-        subject: [""],
-        mark: [""],
-      }));
-    }
-  }
+  // const remaining_count = 1 - marks.length;
+  // if (remaining_count && remaining_count > 0) {
+  //   for (let index = 0; index < remaining_count; index++) {
+  //     marks_array.push(this.fb.group({
+  //       subject: [""],
+  //       mark: [""],
+  //     }));
+  //   }
+  // }
   return marks_array;
 }
 
   poststudentdetails()
   {
-    if (JSON.stringify(this.setting) == '{}') 
+    if (this.flag==false) 
     {
         this.apiservice.poststudent(this.studentform.value)
           .subscribe(
@@ -174,6 +186,8 @@ buildmarkform(marks:any): any {
   }
 
   delete(id:number){
+    if(confirm('Do you want to delete a rocord? '))
+    {
     this.apiservice.deletestudent(id)
           .subscribe(
           {
@@ -183,6 +197,7 @@ buildmarkform(marks:any): any {
           error:(err:any)=>{console.log(err);},
           complete:()=>{}
         });
+    }
   }
 
   generatepdf()
@@ -211,10 +226,15 @@ buildmarkform(marks:any): any {
   {
     let total=0;
     let grade='-';
-    for(let j=0;j<this.studentmarks.length;j++)
-    {
-      total+=Number(this.studentmarks.value[j].mark);
-    }
+    this.studentmarks.value.forEach((m:any) => {
+      total+=Number(m.mark);
+
+    });
+      
+    // for(let j=0;j<this.studentmarks.length;j++)
+    // {
+    //   total+=Number(this.studentmarks.value[j].mark);
+    // }
     
     this.studentform.controls['total'].setValue(total);
 
@@ -296,15 +316,15 @@ buildmarkform(marks:any): any {
     }
   }
 
-  valid(e:string)
+  valid(control:FormControl):{[s:string]:boolean}
   {
     let y:number;
-    y=Number(e.substring(4,-4));
+    y=Number(control.value.substring(4,-4));
     if(y>2000)
     {
-      alert("Allowed year of birth is <=2000");
-      this.studentform.controls['dob'].setValue('');
+      return { daterestricted:true };
     }
+    return null as any;
   }
 
   get form()

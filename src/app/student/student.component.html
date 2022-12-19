@@ -77,9 +77,10 @@
                     <label>Date of Birth</label>
                 </div>
                 <div class="col-lg-2">
-                    <input #bd type="date" class="form-control" formControlName="dob" (blur)="valid(bd.value)" max="2000-12-31"/>
+                    <input type="date" class="form-control" formControlName="dob" max="2000-12-31"/>
                     <span *ngIf="form['dob'] && form['dob'].invalid && form['dob'].touched" class="error">
-                      Please enter Date of Birth                     
+                      <span *ngIf="form['dob']?.errors?.['required']">Please enter Date of Birth</span>
+                      <span *ngIf="form['dob']?.errors?.['daterestricted']">Year of birth should be less than or = to 2000</span>
                     </span> 
                 </div>
                 </div>
@@ -101,8 +102,11 @@
                 <div class="col-lg-2 offset-2">
                 <label>Mobile:</label>
                 </div>
-                <div class="col-lg-3">
-                    <app-mobile (mobileno)="after_mobileno_set($event)"></app-mobile>
+                <div class="col-lg-3" *ngIf="flag==false">
+                    <app-mobile [mobile]='m' (mobileno)="after_mobileno_set($event)"></app-mobile>
+                </div>
+                <div class="col-lg-3" *ngIf="flag">
+                    <app-mobile [mobile]='m' (mobileno)="after_mobileno_set($event)"></app-mobile>
                 </div>
             </div>
             <br>
@@ -180,7 +184,7 @@
                 </div> -->
                 <div class="col-lg-2">
                     <select formControlName="district1">
-                        <option>Select District</option>
+                        <option [selected]="setting.district1">Select District</option>
                         <option *ngFor="let c of city">{{c}}</option>
                     </select>
                 </div>
